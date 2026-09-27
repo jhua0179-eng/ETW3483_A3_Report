@@ -1,0 +1,16 @@
+services:
+  quarto:
+    image: ghcr.io/quarto-dev/quarto:latest
+    working_dir: /project
+    volumes:
+      - ./:/project
+    command: quarto preview ETW3483_A3_report.qmd --port 3000 --host 0.0.0.0 --no-browser
+    ports:
+      - "3000:3000"
+    restart: on-failure
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/3000"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
